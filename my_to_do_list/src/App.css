@@ -1,11 +1,93 @@
-.App {
-  text-align: center;
+*{
+  margin: 0;
 }
-
-.App>ul{
+body{
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color:thistle;
 }
-
+.App>div:not(#menu){
+  padding: 0 2rem;
+}
+.App {
+  zoom: 140%;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color:white;
+  border-radius: 5%;
+}
+.separador{
+  height: 1px;
+  background-color:grey;
+  border-radius: 15%;
+  width: 100%;
+}
+.App>form{
+  padding: 0 2rem;
+}
+.App>form>input{
+  width: 95%;
+  margin-top: 20px;
+  padding: 10px;
+}
+/*#region ToDo List */
+.task{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  width: 100%;
+}
+.task>article{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.task>article>p{
+  text-align: start;
+}
+.task>article>div{
+  width: 10rem;
+  display: flex;
+  justify-content: flex-end;
+}
+/* #endregion */
+/* Menu */
+.separadorV{
+  width: 1px;
+  background-color:grey;
+  border-radius: 15%;
+}
+#menu>div>p{
+  width:fit-content;
+  font-size: 15px;
+  color: grey;
+}
+#menu{
+  background-color:palegreen;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  padding: 10px;
+}
+#menu>div:not(.separadorV){
+  width: fit-content;
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
+}
+.btn{
+  background-color: transparent;
+  border: none;
+  font-size: 15px;
+  color: grey;
+  cursor: pointer;
+}
+.btn:hover{
+  border: 1px solid grey;
+}
