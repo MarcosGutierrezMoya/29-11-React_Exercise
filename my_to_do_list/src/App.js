@@ -3,6 +3,8 @@ import './App.css';
 
 let numId = 0;
 const taskRef = React.createRef();
+let newTasks = [];
+let cogidas = false;
 
 function App() {
   const [tasks, setTasks] = React.useState([
@@ -10,6 +12,10 @@ function App() {
     {id:2,text:"Comer",done:false, select:false},
     {id:3,text:"Dormir",done:false, select:false}
   ])
+  if (!cogidas) {
+    cogidas = true;
+    newTasks = tasks;
+  }
   return (
     <div className="App">
       <h1>My ToDo List</h1>
@@ -22,12 +28,12 @@ function App() {
 
 function ToDoList({tasks, setTasks}) {
   function taskDone(toDo) {
-    const done = tasks.map((clicked)=>clicked.id===toDo.id?{...clicked, done:!clicked.done}:clicked)((clicked)=>clicked.id===toDo.id?{...clicked, done:!clicked.done}:clicked)
+    cogidas = false;
+    const done = tasks.map((clicked)=>clicked.id===toDo.id?{...clicked, done:!clicked.done,select:clicked.select}:clicked)
     setTasks(done)
   }
   function checked(elem) {
     elem.select = !elem.select
-    console.log(elem);
   }
   if (!tasks.length) {
     return <p>You don't have anything to do</p>
@@ -40,10 +46,11 @@ function ToDoList({tasks, setTasks}) {
           <input
             onChange={()=>checked(toDo)}
             type="checkbox"
-            onDoubleClick={()=>taskDone(toDo)}
-            style={{textDecoration: toDo.done?"line-through":"none"}}
             key={toDo.id} />
-            <p key={`text${toDo.id}`}>{toDo.text}</p>
+            <p 
+              onDoubleClick={()=>taskDone(toDo)}
+              style={{textDecoration: toDo.done?"line-through":"none"}}
+              key={`text${toDo.id}`}>{toDo.text}</p>
             <div key={`borrar${toDo.id}`}>
               {/* <DeleteTask toDo={toDo} tasks={tasks} setTasks={setTasks}/> */}
             </div>  
@@ -60,7 +67,7 @@ function AddToDoList({tasks, setTasks}) {
     e.preventDefault();
     if (taskRef.current.value !== "") {
       numId=tasks.length+1;
-      setTasks(tasks.concat({id:numId,text:taskRef.current.value,done:false}))
+      setTasks(tasks.concat({id:numId,text:taskRef.current.value,done:false,select:false}))
       taskRef.current.value = "";
     }
   }
@@ -98,33 +105,56 @@ function AddToDoList({tasks, setTasks}) {
 function Menu({tasks, setTasks}){
   function addTask(){
     if (taskRef.current.value !== "") {
-      numId=tasks.length+1;
+      tasks[tasks.length-1].id === tasks.length+1?numId=tasks.length:numId=tasks.length+1;
       setTasks(tasks.concat({id:numId,text:taskRef.current.value,done:false}))
       taskRef.current.value = "";
     }
   }
+  function showAll() {
+    setTasks(newTasks);
+  }
+  function showActive() {
+    tasks = newTasks;
+    const activeTasks = tasks.filter(item=>!item.done);
+    setTasks(activeTasks);
+  }
+  function showCompleted() {
+    tasks = newTasks;
+    const activeTasks = tasks.filter(item=>item.done);
+    setTasks(activeTasks);
+  }
   function Delete() {
-        const confirm = window.confirm(`You will remove the task`);
-        if (confirm) {
-          const remove = tasks.filter((t)=>t.select===false);
-          setTasks(remove);
-        }
+    cogidas = false;
+    let borrado = false;
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].select) {
+        borrado = true;
+      }
+    }
+    if (borrado) {
+      const confirm = window.confirm(`Are you sure you want to remove the tasks?`);
+      if (confirm) {
+        const remove = tasks.filter((t)=>t.select===false);
+        setTasks(remove);
+      }
+    }
   }
   return(
     <div id='menu'>
       <div>
-        <button onClick={()=>addTask()} className="btn">+</button>
+        <button onClick={()=>addTask()} className="btn plus">+</button>
         <button onClick={()=>Delete()} className="btn">Del</button>
         <div className='separadorV'></div>
         <p>{tasks.length} {tasks.length === 1?"item":"items"} left</p>
       </div>
       <div>
-        <button className="btn">All</button>
-        <button className="btn">Active</button>
-        <button className="btn">Completed</button>
+        <button onClick={()=>showAll()} className="btn">All</button>
+        <button onClick={()=>showActive()} className="btn">Active</button>
+        <button onClick={()=>showCompleted()} className="btn">Completed</button>
       </div>
     </div>
   )
 }
+
 
 export default App;

@@ -61,21 +61,24 @@ body{
   width: 1px;
   background-color:grey;
   border-radius: 15%;
+  margin-top:7px;
+  height: 20px;
 }
 #menu>div>p{
-  width:fit-content;
-  font-size: 15px;
+  font-size: 13px;
   color: grey;
+  margin-top:7.5px;
 }
 #menu{
   background-color:palegreen;
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 30px;
-  padding: 10px;
+  /* padding: 10px; */
 }
-#menu>div:not(.separadorV){
+#menu>div{
   width: fit-content;
   display: flex;
   justify-content: flex-end;
@@ -84,10 +87,16 @@ body{
 .btn{
   background-color: transparent;
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   color: grey;
   cursor: pointer;
 }
 .btn:hover{
-  border: 1px solid grey;
+  /* border: 1px solid grey; */
+  background-color: rgb(145, 238, 145);
+}
+.plus{
+  font-size: 30px;
+  color: black;
+  font-weight: 700;
 }
